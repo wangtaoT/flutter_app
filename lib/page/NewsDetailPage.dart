@@ -9,7 +9,21 @@ class NewsDetailPage extends StatelessWidget {
           "咨询详情",
           style: new TextStyle(color: Colors.white),
         ),
-        iconTheme: new IconThemeData(color: Colors.w),
+        iconTheme: new IconThemeData(color: Colors.white),
+      ),
+      body: new Center(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text("News Detail Page."),
+            new RaisedButton(
+              child: new Text("Back"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
       ),
     );
   }
