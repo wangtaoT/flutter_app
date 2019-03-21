@@ -4,8 +4,7 @@ import 'page/NewsListPage.dart';
 import 'page/TweetsListPage.dart';
 import 'page/DiscoveryPage.dart';
 import 'page/MyInfoPage.dart';
-
-
+import 'page/NewsDetailPage.dart';
 
 void main() {
   runApp(new MyApp());
@@ -20,15 +19,16 @@ class MyOSCClientState extends State<MyApp> {
   // 页面底部当前tab索引值
   int _tabIndex = 0;
 
-  final tabTextStyleNormal = new TextStyle(color: const Color(0xff969696));
-  final tabTextStyleSelected = new TextStyle(color: const Color(0xff63ca6c));
-
   // 页面内容区域
+  var _body;
+
+  final tabTextStyleNormal = new TextStyle(color: const Color(0xff969696));
+
+  final tabTextStyleSelected = new TextStyle(color: const Color(0xff63ca6c));
   var appBarTitles = ['资讯', '动弹', '发现', '我的'];
   var tabImages;
 
-  var _body;
-
+  //路由表
   Map<String, WidgetBuilder> _routes = new Map();
 
   // 传入图片路径，返回一个Image组件
@@ -38,6 +38,9 @@ class MyOSCClientState extends State<MyApp> {
 
   // 数据初始化，包括TabIcon数据和页面内容数据
   void initData() {
+    _routes["newsDetail"] = (BuildContext) {
+      return new NewsDetailPage();
+    };
     if (tabImages == null) {
       tabImages = [
         [
