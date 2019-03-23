@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/widgets/MyDrawer.dart';
 import 'page/NewsListPage.dart';
 import 'page/TweetsListPage.dart';
 import 'page/DiscoveryPage.dart';
@@ -124,9 +125,8 @@ class MyOSCClientState extends State<MyApp> {
             });
           },
         ),
-        // drawer属性用于为当前页面添加一个侧滑菜单
         drawer: new Drawer(
-          child: new Center(child: new Text("this is a drawer")),
+          child: new MyDrawer(),
         ),
       ),
     );

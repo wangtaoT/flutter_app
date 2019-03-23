@@ -8,7 +8,7 @@ class NewsListPage extends StatelessWidget {
       child: new RaisedButton(
           child: new Text("to detail page"),
           onPressed: () {
-            Navigator.of(context).pushNamed("newsDetail")
+            Navigator.of(context).pushNamed("newsDetail");
           }),
     );
   }
