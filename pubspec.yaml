@@ -55,6 +55,15 @@ flutter:
   - images/leftmenu/ic_fabu.png
   - images/leftmenu/ic_about.png
   - images/leftmenu/ic_settings.png
+  - images/ic_comment.png
+  - images/ic_img_default.jpg
+  - images/ic_discover_gist.png
+  - images/ic_discover_git.png
+  - images/ic_discover_nearby.png
+  - images/ic_discover_pos.png
+  - images/ic_discover_scan.png
+  - images/ic_discover_shake.png
+  - images/ic_discover_softwares.png
 
 
 
