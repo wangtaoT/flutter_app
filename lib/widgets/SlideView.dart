@@ -1,44 +1,49 @@
 import 'package:flutter/material.dart';
+import '../pages/NewsDetailPage.dart';
+import 'SlideViewIndicator.dart';
 
 class SlideView extends StatefulWidget {
   var data;
+  SlideViewIndicator slideViewIndicator;
 
-  // data表示轮播图中的数据
-  SlideView(data) {
+  SlideView(data, indicator) {
     this.data = data;
+    this.slideViewIndicator = indicator;
   }
 
   @override
   State<StatefulWidget> createState() {
-    // 可以在构造方法中传参供SlideViewState使用
-    // 或者也可以不传参数，直接在SlideViewState中通过this.widget.data访问SlideView中的data变量
-    return new SlideViewState(data);
+    return new SlideViewState();
   }
 }
 
-class SlideViewState extends State<SlideView>
-    with SingleTickerProviderStateMixin {
-  // TabController为TabBarView组件的控制器
+class SlideViewState extends State<SlideView> with SingleTickerProviderStateMixin {
   TabController tabController;
   List slideData;
-
-  SlideViewState(data) {
-    slideData = data;
-  }
 
   @override
   void initState() {
     super.initState();
-    // 初始化
-    tabController = new TabController(
-        length: slideData == null ? 0 : slideData.length, vsync: this);
+    slideData = this.widget.data;
+    tabController = new TabController(length: slideData == null ? 0 : slideData.length, vsync: this);
+    tabController.addListener(() {
+      if (this.widget.slideViewIndicator.state.mounted) {
+        this.widget.slideViewIndicator.state.setSelectedIndex(tabController.index);
+      }
+    });
   }
 
   @override
   void dispose() {
-    // 销毁
     tabController.dispose();
     super.dispose();
+  }
+
+  Widget generateCard() {
+    return new Card(
+      color: Colors.blue,
+      child: new Image.asset("images/ic_avatar_default.png", width: 20.0, height: 20.0,),
+    );
   }
 
   @override
@@ -52,34 +57,36 @@ class SlideViewState extends State<SlideView>
         var detailUrl = item['detailUrl'];
         items.add(new GestureDetector(
           onTap: () {
-            // 点击页面跳转到详情
+            // 点击跳转到详情
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (ctx) => new NewsDetailPage(id: detailUrl)
+            ));
           },
           child: new Stack(
-            // Stack组件用于将资讯标题文本放置到图片上面
             children: <Widget>[
-              // 加载网络图片
-              new Image.network(imgUrl),
+              new Image.network(imgUrl, width: MediaQuery.of(context).size.width, fit: BoxFit.contain),
               new Container(
-                  // 标题容器宽度跟屏幕宽度一致
-                  width: MediaQuery.of(context).size.width,
-                  // 背景为黑色，加入透明度
-                  color: const Color(0x50000000),
-                  // 标题文本加入内边距
-                  child: new Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    // 字体大小为15，颜色为白色
-                    child: new Text(title,
-                        style:
-                            new TextStyle(color: Colors.white, fontSize: 15.0)),
-                  ))
+                width: MediaQuery.of(context).size.width,
+                color: const Color(0x50000000),
+                child: new Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: new Text(title, style: new TextStyle(color: Colors.white, fontSize: 15.0)),
+                )
+              )
             ],
           ),
         ));
       }
     }
+//    items.add(new Container(
+//      color: const Color(0x00000000),
+//      alignment: Alignment.bottomCenter,
+//      child: new SlideViewIndicator(slideData.length),
+//    ));
     return new TabBarView(
       controller: tabController,
       children: items,
     );
   }
+
 }

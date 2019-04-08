@@ -1,47 +1,61 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/widgets/MyDrawer.dart';
-import 'page/NewsListPage.dart';
-import 'page/TweetsListPage.dart';
-import 'page/DiscoveryPage.dart';
-import 'page/MyInfoPage.dart';
-import 'page/NewsDetailPage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/constants/Constants.dart';
+import 'package:flutter_app/events/ChangeThemeEvent.dart';
+import 'package:flutter_app/util/DataUtils.dart';
+import 'package:flutter_app/util/ThemeUtils.dart';
+import 'pages/NewsListPage.dart';
+import 'pages/TweetsListPage.dart';
+import 'pages/DiscoveryPage.dart';
+import 'pages/MyInfoPage.dart';
+import './widgets/MyDrawer.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(new MyOSCClient());
 }
 
-class MyApp extends StatefulWidget {
+class MyOSCClient extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new MyOSCClientState();
 }
 
-class MyOSCClientState extends State<MyApp> {
-  // 页面底部当前tab索引值
-  int _tabIndex = 0;
-
-  // 页面内容区域
-  var _body;
-
+class MyOSCClientState extends State<MyOSCClient> {
+  final appBarTitles = ['资讯', '动弹', '发现', '我的'];
+  final tabTextStyleSelected = new TextStyle(color: const Color(0xff63ca6c));
   final tabTextStyleNormal = new TextStyle(color: const Color(0xff969696));
 
-  final tabTextStyleSelected = new TextStyle(color: const Color(0xff63ca6c));
-  var appBarTitles = ['资讯', '动弹', '发现', '我的'];
+  Color themeColor = ThemeUtils.currentColorTheme;
+  int _tabIndex = 0;
+
   var tabImages;
+  var _body;
+  var pages;
 
-  //路由表
-  Map<String, WidgetBuilder> _routes = new Map();
-
-  // 传入图片路径，返回一个Image组件
   Image getTabImage(path) {
     return new Image.asset(path, width: 20.0, height: 20.0);
   }
 
-  // 数据初始化，包括TabIcon数据和页面内容数据
-  void initData() {
-    _routes["newsDetail"] = (BuildContext) {
-      return new NewsDetailPage();
-    };
+  @override
+  void initState() {
+    super.initState();
+    DataUtils.getColorThemeIndex().then((index) {
+      print('color theme index = $index');
+      if (index != null) {
+        ThemeUtils.currentColorTheme = ThemeUtils.supportColors[index];
+        Constants.eventBus.fire(new ChangeThemeEvent(ThemeUtils.supportColors[index]));
+      }
+    });
+    Constants.eventBus.on<ChangeThemeEvent>().listen((event) {
+      setState(() {
+        themeColor = event.color;
+      });
+    });
+    pages = <Widget>[
+      new NewsListPage(),
+      new TweetsListPage(),
+      new DiscoveryPage(),
+      new MyInfoPage()
+    ];
     if (tabImages == null) {
       tabImages = [
         [
@@ -62,19 +76,8 @@ class MyOSCClientState extends State<MyApp> {
         ]
       ];
     }
-    // IndexedStack是一个可以根据index来显示不同内容的组件，可以实现点击TabItem切换页面的功能
-    _body = new IndexedStack(
-      children: <Widget>[
-        new NewsListPage(),
-        new TweetsListPage(),
-        new DiscoveryPage(),
-        new MyInfoPage()
-      ],
-      index: _tabIndex,
-    );
   }
 
-  // 根据索引值确定Tab是选中状态的样式还是非选中状态的样式
   TextStyle getTabTextStyle(int curIndex) {
     if (curIndex == _tabIndex) {
       return tabTextStyleSelected;
@@ -82,7 +85,6 @@ class MyOSCClientState extends State<MyApp> {
     return tabTextStyleNormal;
   }
 
-  // 根据索引值确定TabItem的icon是选中还是非选中
   Image getTabIcon(int curIndex) {
     if (curIndex == _tabIndex) {
       return tabImages[curIndex][1];
@@ -90,45 +92,52 @@ class MyOSCClientState extends State<MyApp> {
     return tabImages[curIndex][0];
   }
 
-  // 根据索引值返回页面顶部标题
   Text getTabTitle(int curIndex) {
     return new Text(appBarTitles[curIndex], style: getTabTextStyle(curIndex));
   }
 
-  List<BottomNavigationBarItem> getBottomNavItems() {
-    List<BottomNavigationBarItem> list = new List();
-    for (int i = 0; i < 4; i++) {
-      list.add(new BottomNavigationBarItem(
-          icon: getTabIcon(i), title: getTabTitle(i)));
-    }
-    return list;
-  }
-
   @override
   Widget build(BuildContext context) {
-    initData();
+    _body = new IndexedStack(
+      children: pages,
+      index: _tabIndex,
+    );
     return new MaterialApp(
-      theme: new ThemeData(primaryColor: const Color(0xFF63CA6C)),
-      routes: _routes,
+      theme: new ThemeData(
+          primaryColor: themeColor
+      ),
       home: new Scaffold(
         appBar: new AppBar(
-            title: new Text(appBarTitles[_tabIndex],
-                style: new TextStyle(color: Colors.white)),
-            iconTheme: new IconThemeData(color: Colors.white)),
+          title: new Text(appBarTitles[_tabIndex],
+          style: new TextStyle(color: Colors.white)),
+          iconTheme: new IconThemeData(color: Colors.white)
+        ),
         body: _body,
         bottomNavigationBar: new CupertinoTabBar(
-          items: getBottomNavItems(),
+          items: <BottomNavigationBarItem>[
+            new BottomNavigationBarItem(
+                icon: getTabIcon(0),
+                title: getTabTitle(0)),
+            new BottomNavigationBarItem(
+                icon: getTabIcon(1),
+                title: getTabTitle(1)),
+            new BottomNavigationBarItem(
+                icon: getTabIcon(2),
+                title: getTabTitle(2)),
+            new BottomNavigationBarItem(
+                icon: getTabIcon(3),
+                title: getTabTitle(3)),
+          ],
           currentIndex: _tabIndex,
           onTap: (index) {
-            setState(() {
+            setState((){
               _tabIndex = index;
             });
           },
         ),
-        drawer: new Drawer(
-          child: new MyDrawer(),
-        ),
+        drawer: new MyDrawer()
       ),
     );
   }
 }
+
