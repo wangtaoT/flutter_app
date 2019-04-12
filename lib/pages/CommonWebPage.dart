@@ -54,18 +54,25 @@ class CommonWebPageState extends State<CommonWebPage> {
       titleContent.add(new CupertinoActivityIndicator());
     }
     titleContent.add(new Container(width: 50.0));
-    return new WebviewScaffold(
-      url: widget.url,
-      appBar: new AppBar(
-        title: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: titleContent,
+    return new WillPopScope(
+        child: new WebviewScaffold(
+          url: widget.url,
+          appBar: new AppBar(
+            title: new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: titleContent,
+            ),
+            iconTheme: new IconThemeData(color: Colors.white),
+          ),
+          withZoom: true,
+          withLocalStorage: true,
+          withJavascript: true,
         ),
-        iconTheme: new IconThemeData(color: Colors.white),
-      ),
-      withZoom: true,
-      withLocalStorage: true,
-      withJavascript: true,
-    );
+        onWillPop: _requestPop);
+  }
+
+  Future<bool> _requestPop() {
+    flutterWebViewPlugin.goBack().then(new Future.value(false));
+    return new Future.value(false);
   }
 }
