@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 void main() {
   runApp(new MaterialApp(
-    home: new MyApp(),
+    home: new LayoutDemo(),
   ));
 
   //沉浸式状态栏
@@ -17,73 +17,36 @@ void main() {
   }
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new MyAppState();
-  }
-}
-
-class MyAppState extends State<MyApp> {
+class LayoutDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextEditingController _userPhoneController = new TextEditingController();
-    TextEditingController _userPasswordController = new TextEditingController();
-
-    void onTextClear() {
-      setState(() {
-        _userPhoneController.text = "";
-        _userPasswordController.text = "";
-      });
-    }
-
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("登录"),
+        title: new Text("水平方向布局"),
       ),
-      body: new Column(
+      body: new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          new TextField(
-            controller: _userPhoneController,
-            keyboardType: TextInputType.number,
-            decoration: new InputDecoration(
-                contentPadding: const EdgeInsets.all(10),
-                icon: new Icon(Icons.phone),
-                labelText: "请输入手机号"),
-            onChanged: (String str) {
-              print("最终手机号为$str-------------");
+          new RaisedButton(
+            onPressed: () {
+              print("点击红色按钮");
             },
+            color: const Color(0xffff0000),
+            child: new Text("红色按钮"),
           ),
-          new TextField(
-            controller: _userPasswordController,
-            keyboardType: TextInputType.text,
-            decoration: new InputDecoration(
-                contentPadding: const EdgeInsets.all(10),
-                icon: new Icon(Icons.nature_people),
-                labelText: "请输入名字"),
+          new RaisedButton(
+            onPressed: () {
+              print("点击蓝色按钮");
+            },
+            color: const Color(0xff000099),
           ),
-          new Builder(builder: (BuildContext context) {
-            return new RaisedButton(
-              onPressed: () {
-                if (_userPasswordController.text.toString() == "10086" &&
-                    _userPhoneController.text.toString() == "10086") {
-                  Scaffold.of(context)
-                      .showSnackBar(new SnackBar(content: new Text("校验通过")));
-                } else {
-                  Scaffold.of(context).showSnackBar(
-                      new SnackBar(content: new Text("校验有问题，请重新输入")));
-                  onTextClear();
-                }
-              },
-              color: Colors.blue,
-              highlightColor: Colors.deepPurple,
-              disabledColor: Colors.cyan,
-              child: new Text(
-                "登录",
-                style: new TextStyle(color: Colors.white),
-              ),
-            );
-          })
+          new RaisedButton(
+            onPressed: () {
+              print("点击粉色按钮");
+            },
+            color: const Color(0xffee9999),
+            child: new Text("粉色按钮"),
+          )
         ],
       ),
     );
