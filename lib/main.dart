@@ -5,50 +5,147 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(new MaterialApp(
-    home: new LayoutDemo(),
-  ));
+  runApp(new MaterialApp(home: new MyApp()));
+}
 
-  //沉浸式状态栏
-  if (Platform.isAndroid) {
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new MyState();
   }
 }
 
-class LayoutDemo extends StatelessWidget {
+class MyState extends State<MyApp> {
+  List<ItemEntity> entityList = [];
+  ScrollController _scrollController = new ScrollController();
+  bool isLoadData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print("-----------------加载更多");
+        _getMoreData();
+      }
+    });
+    for (int i = 0; i < 10; i++) {
+      entityList.add(ItemEntity("Item  $i", Icons.accessibility));
+    }
+  }
+
+  Future<Null> _handleRefresh() async {
+    print("-------------开始刷新");
+    await Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        entityList.clear();
+        entityList = List.generate(10, (index) {
+          return new ItemEntity("下拉刷新后-----item$index", Icons.accessibility);
+        });
+      });
+    });
+  }
+
+  Future<Null> _getMoreData() async {
+    await Future.delayed(Duration(seconds: 2), () {
+      //模拟延时操作
+      if (!isLoadData) {
+        isLoadData = true;
+        setState(() {
+          isLoadData = false;
+          List<ItemEntity> newList = List.generate(
+              5,
+              (index) => new ItemEntity(
+                  "上拉加载--item ${index + entityList.length}",
+                  Icons.accessibility));
+          entityList.addAll(newList);
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("水平方向布局"),
+        title: new Text("ListView"),
       ),
-      body: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: RefreshIndicator(
+          displacement: 50,
+          color: Colors.redAccent,
+          backgroundColor: Colors.blue,
+          child: new ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              if (index == entityList.length) {
+                return LoadMoreView();
+              } else {
+                return ItemView(entityList[index]);
+              }
+            },
+            itemCount: entityList.length + 1,
+            controller: _scrollController,
+          ),
+          onRefresh: _handleRefresh),
+    );
+  }
+}
+
+class ItemEntity {
+  String title;
+  IconData iconData;
+
+  ItemEntity(this.title, this.iconData);
+}
+
+class ItemView extends StatelessWidget {
+  ItemEntity itemEntity;
+
+  ItemView(this.itemEntity);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      height: 100,
+      child: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
-          new RaisedButton(
-            onPressed: () {
-              print("点击红色按钮");
-            },
-            color: const Color(0xffff0000),
-            child: new Text("红色按钮"),
+          new Text(
+            itemEntity.title,
+            style: TextStyle(color: Colors.black87),
           ),
-          new RaisedButton(
-            onPressed: () {
-              print("点击蓝色按钮");
-            },
-            color: const Color(0xff000099),
-          ),
-          new RaisedButton(
-            onPressed: () {
-              print("点击粉色按钮");
-            },
-            color: const Color(0xffee9999),
-            child: new Text("粉色按钮"),
+          new Positioned(
+            child: Icon(
+              itemEntity.iconData,
+              size: 30,
+              color: Colors.blue,
+            ),
+            left: 5,
           )
         ],
       ),
+    );
+  }
+}
+
+class LoadMoreView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Center(
+          child: Row(
+            children: <Widget>[
+              new CircularProgressIndicator(),
+              Padding(padding: EdgeInsets.all(10)),
+              Text('加载中...')
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+      ),
+      color: Colors.white70,
     );
   }
 }
