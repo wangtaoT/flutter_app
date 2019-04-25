@@ -5,12 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/layout_type.dart';
 import 'package:flutter_app/splash.dart';
-import 'package:flutter_app/widgets/company_page.dart';
+import 'package:flutter_app/widgets/chat_page.dart';
+import 'package:flutter_app/widgets/company/company_page.dart';
 import 'package:flutter_app/widgets/job_page.dart';
+import 'package:flutter_app/widgets/mine_page.dart';
 import 'package:redux/redux.dart';
 
 void main() {
-  runApp(new MaterialApp(home: new App()));
+  runApp(new App());
+
+  if (Platform.isAndroid) {
+    // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class App extends StatelessWidget {
@@ -57,8 +66,8 @@ class _MainPageState extends State<MainPage> {
     return BottomNavigationBarItem(
         icon: new Image.asset(
           icon,
-          width: 35,
-          height: 35,
+          width: 25,
+          height: 25,
         ),
         title: Text(
           text,
@@ -69,6 +78,7 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildButtonNavBar() {
     return BottomNavigationBar(
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       items: [
         _buildItem(

@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/config/config.dart';
 import 'package:flutter_app/model/company/company.dart';
-import 'package:flutter_app/model/company/company_item.dart';
+import 'package:flutter_app/widgets/company/company_item.dart';
+import 'package:flutter_app/widgets/company/company_detail_page.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _CompanyPageState extends State<CompanyPage>
   }
 
   @override
-  bool get wantKeepAlive => null;
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,7 @@ class _CompanyPageState extends State<CompanyPage>
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 CompanyDetailPage(
-                    company: companyList[index], heroLogo: "heroLogo${index}")
+                    company: companyList[index], heroLogo: "heroLogo${index}");
               }));
             },
             company: companyList[index],

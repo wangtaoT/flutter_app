@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common/config/config.dart';
 import 'package:flutter_app/model/job/job.dart';
-import 'package:flutter_app/model/job/job_item.dart';
+import 'package:flutter_app/widgets/job/job_item.dart';
 import 'package:http/http.dart' as http;
 
 class JobPage extends StatefulWidget {
