@@ -18,18 +18,51 @@ class _CompanyPageState extends State<CompanyPage>
     with AutomaticKeepAliveClientMixin {
   List<Company> companyList = List();
 
-  Future<List<Company>> _fetchCompanyList() async {
-    final response = await http.get("${Config.BASE_URL}/company/list/1");
-
-    List<Company> companyList = List<Company>();
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> result = json.decode(response.body);
-      for (dynamic data in result["data"]["companies"]) {
-        Company companyData = Company.fromJson(data);
-        companyList.add(companyData);
-      }
-    }
+  @override
+  void initState() {
+    super.initState();
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
+    companyList.add(new Company(
+        id: "1",
+        company: "company",
+        logo:
+            "https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg",
+        info: "info",
+        hot: "hot"));
   }
 
   @override
@@ -55,27 +88,12 @@ class _CompanyPageState extends State<CompanyPage>
         ],
       ),
       body: new Center(
-        child: FutureBuilder(
-            future: _fetchCompanyList(),
-            builder: (context, AsyncSnapshot snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return new CircularProgressIndicator();
-                default:
-                  if (snapshot.hasError) {
-                    return new Text("Error:${snapshot.error}");
-                  } else {
-                    return _createListView(context, snapshot);
-                  }
-              }
-            }),
+        child: _createListView(context),
       ),
     );
   }
 
-  Widget _createListView(BuildContext context, AsyncSnapshot snapshot) {
-    List<Company> companyList = snapshot.data;
+  Widget _createListView(BuildContext context) {
     return ListView.builder(
         key: new PageStorageKey("company-list"),
         itemCount: companyList.length,

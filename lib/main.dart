@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/layout_type.dart';
 import 'package:flutter_app/splash.dart';
-import 'package:flutter_app/widgets/chat_page.dart';
+import 'package:flutter_app/widgets/chat/chat_page.dart';
 import 'package:flutter_app/widgets/company/company_page.dart';
-import 'package:flutter_app/widgets/job_page.dart';
-import 'package:flutter_app/widgets/mine_page.dart';
+import 'package:flutter_app/widgets/job/job_page.dart';
+import 'package:flutter_app/widgets/mine/mine_page.dart';
 import 'package:redux/redux.dart';
 
 void main() {
