@@ -10,15 +10,14 @@ import 'package:flutter_app/widgets/gallery_page.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyDetailPage extends StatefulWidget {
-  Company company;
-  String heroLogo;
+  final Company company;
+  final String heroLogo;
 
-  CompanyDetailPage({this.company, this.heroLogo});
+  CompanyDetailPage({Key key, @required this.company, @required this.heroLogo})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return null;
-  }
+  _CompanyDetailPageState createState() => _CompanyDetailPageState();
 }
 
 class _CompanyDetailPageState extends State<CompanyDetailPage>
@@ -28,7 +27,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
 
   Future<CompanyDetail> _fetchCompany() async {
     final response = await http
-        .get("${Config.BASE_URL}/companyDetail/5c3b757fffd9a60984d706c6");
+        .get('${Config.BASE_URL}/companyDetail/5c3b757fffd9a60984d706c6');
     if (response.statusCode == 200) {
       CompanyDetail companyDetail = CompanyDetail.fromJson(
           json.decode(response.body)['data']['companyDetail']);
@@ -65,20 +64,24 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
     return new Center(
         child: Scaffold(
       backgroundColor: new Color.fromARGB(255, 68, 76, 96),
+//      body: Container(
+//        decoration: BoxDecoration(
+//          image: DecorationImage(
+//              colorFilter: new ColorFilter.mode(
+//                  Colors.black.withOpacity(0.1), BlendMode.dstATop),
+//              fit: BoxFit.cover,
+//              image: new NetworkImage(widget.company.logo),
+//              alignment: Alignment.center),
+//        ),
+//        child: _companyDetailView(context),
+//      ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              colorFilter: new ColorFilter.mode(
-                  Colors.black.withOpacity(0.1), BlendMode.dstATop),
-              fit: BoxFit.cover,
-              image: new NetworkImage(widget.company.logo),
-              alignment: Alignment.center),
-        ),
         child: _companyDetailView(context),
       ),
     ));
   }
 
+  // 公司详情页面
   Widget _companyDetailView(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -185,7 +188,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
     );
   }
 
-  //主体
+  // 主体
   Widget _companyBody(BuildContext context, AsyncSnapshot snapshot) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,7 +229,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
     );
   }
 
-  //上班时间
+  // 上班时间
   Widget _createWorkHours() {
     return Wrap(
       spacing: 40.0,
@@ -312,7 +315,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
     );
   }
 
-  //公司照片
+  // 公司照片
   Widget _createImgList(BuildContext context, AsyncSnapshot snapshot) {
     List imgList = snapshot.data.companyImgsResult;
     return ListView.builder(

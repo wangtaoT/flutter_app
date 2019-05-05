@@ -16,6 +16,25 @@ class JobPage extends StatefulWidget {
 class _JobPageState extends State<JobPage> with AutomaticKeepAliveClientMixin {
   List<Job> jobList = List<Job>();
 
+  Future<Null> _refresh() async {
+    await Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        jobList.clear();
+        for (int i = 0; i < 3; i++) {
+          jobList.add(new Job(
+              id: "1",
+              title: "刷新后",
+              salary: "salary",
+              company: "company",
+              info: "info",
+              category: "category",
+              head: "head",
+              publish: "publish"));
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -90,7 +109,10 @@ class _JobPageState extends State<JobPage> with AutomaticKeepAliveClientMixin {
         ),
       ),
       body: new Center(
-        child: _createListView(context),
+        child: RefreshIndicator(
+            backgroundColor: Colors.white,
+            child: _createListView(context),
+            onRefresh: _refresh),
       ),
     );
   }

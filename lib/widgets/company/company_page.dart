@@ -100,10 +100,15 @@ class _CompanyPageState extends State<CompanyPage>
         itemBuilder: (BuildContext context, int index) {
           return CompanyItem(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                CompanyDetailPage(
-                    company: companyList[index], heroLogo: "heroLogo${index}");
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  // fullscreenDialog: true,
+                  builder: (context) => CompanyDetailPage(
+                      company: companyList[index],
+                      heroLogo: "heroLogo${index}"),
+                ),
+              );
             },
             company: companyList[index],
             heroLogo: "heroLogo${index}",
