@@ -64,18 +64,14 @@ class _CompanyDetailPageState extends State<CompanyDetailPage>
     return new Center(
         child: Scaffold(
       backgroundColor: new Color.fromARGB(255, 68, 76, 96),
-//      body: Container(
-//        decoration: BoxDecoration(
-//          image: DecorationImage(
-//              colorFilter: new ColorFilter.mode(
-//                  Colors.black.withOpacity(0.1), BlendMode.dstATop),
-//              fit: BoxFit.cover,
-//              image: new NetworkImage(widget.company.logo),
-//              alignment: Alignment.center),
-//        ),
-//        child: _companyDetailView(context),
-//      ),
       body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.1), BlendMode.dstATop),
+                image: new NetworkImage(widget.company.logo),
+                fit: BoxFit.cover,
+                alignment: Alignment.center)),
         child: _companyDetailView(context),
       ),
     ));
