@@ -4,5 +4,5 @@ A new Flutter application.
 
 ## Getting Started
 
-仿boss直聘
+仿gank
 
