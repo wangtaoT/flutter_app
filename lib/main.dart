@@ -3,7 +3,6 @@ import 'package:flutter_app/config/AppOptions.dart';
 import 'package:flutter_app/ui/Home.dart';
 import 'package:flutter_app/ui/Setting.dart';
 import 'package:flutter_app/ui/Splash.dart';
-import 'package:flutter_app/ui/page/BookPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,7 +36,6 @@ class _MyAppState extends State<MyApp> {
         '/home': (_) => Home(),
         '/setting': (_) =>
             Setting(appOpt: _appOpt, onOptionsChanged: _handleOptChanged),
-        '/book': (_) => BookPage()
       },
     );
   }

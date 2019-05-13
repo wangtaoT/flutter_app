@@ -8,7 +8,7 @@ class BookPage extends StatelessWidget {
       length: tabList.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("闲读"),
+          title: Text('闲读'),
           bottom: TabBar(
               isScrollable: true,
               tabs: tabList.map((TabContent tab) {
@@ -18,9 +18,10 @@ class BookPage extends StatelessWidget {
               }).toList()),
         ),
         body: TabBarView(
-            children: tabList.map((TabContent tab) {
-          return BookList(category: tab.id);
-        }).toList()),
+          children: tabList.map((TabContent tab) {
+            return BookList(category: tab.id);
+          }).toList(),
+        ),
       ),
     );
   }

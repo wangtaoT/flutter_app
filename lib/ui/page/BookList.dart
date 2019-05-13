@@ -1,5 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter_app/models/BookResp.dart';
 import 'package:flutter_app/ui/comm/LoadingMoreFooter.dart';
 import 'package:flutter_app/ui/comm/LoadingPage.dart';
@@ -11,9 +12,7 @@ class BookList extends StatefulWidget {
   const BookList({Key key, this.category}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _BookListState();
-  }
+  _BookListState createState() => _BookListState();
 }
 
 class _BookListState extends State<BookList>

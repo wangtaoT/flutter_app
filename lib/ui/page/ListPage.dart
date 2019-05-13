@@ -59,7 +59,7 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Android"),
+        title: Text(widget.category),
       ),
       body: data.length == 0
           ? LoadingPage()
