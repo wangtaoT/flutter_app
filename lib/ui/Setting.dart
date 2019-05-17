@@ -1,12 +1,11 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/config/AppOptions.dart';
+import 'package:flutter_app/util/Constants.dart';
+import 'package:flutter_app/util/DataUtils.dart';
+import 'package:flutter_app/util/ThemeUtils.dart';
 
 class Setting extends StatelessWidget {
-  final AppOptions appOpt;
-  final ValueChanged<AppOptions> onOptionsChanged;
-
-  const Setting({Key key, this.appOpt, this.onOptionsChanged})
-      : super(key: key);
+  List<Color> colors = ThemeUtils.supportColors;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +30,18 @@ class Setting extends StatelessWidget {
                 crossAxisCount: 6,
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
-                children: colorList.map((item) {
+                children: List.generate(colors.length, (index) {
                   return GestureDetector(
                     child: Container(
-                      color: item,
+                      color: colors[index],
                     ),
                     onTap: () {
-                      onOptionsChanged(appOpt.copyWith(
-                          appTheme: AppTheme(
-                              ThemeData().copyWith(primaryColor: item))));
+                      ThemeUtils.currentColorTheme = colors[index];
+                      DataUtils.setColorTheme(index);
+                      Constants.eventBus.fire(ChangeThemeEvent(index));
                     },
                   );
-                }).toList(),
+                }),
               ),
             )
           ],
@@ -51,18 +50,3 @@ class Setting extends StatelessWidget {
     );
   }
 }
-
-const List<Color> colorList = <Color>[
-  Colors.red,
-  Colors.pink,
-  Colors.green,
-  Colors.teal,
-  Colors.blue,
-  Colors.cyan,
-  Colors.purple,
-  Colors.yellow,
-  Colors.lime,
-  Colors.orange,
-  Colors.white,
-  Colors.black,
-];
