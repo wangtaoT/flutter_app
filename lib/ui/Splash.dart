@@ -122,7 +122,7 @@ class _SlpashState extends State<Slpash> with TickerProviderStateMixin {
             left: 10.0 + _curvedText1Move.value * 40.0,
             child: FadeTransition(
               opacity: _curvedText1Opacity,
-              child: Text('Powered by: PK', style: textStyle),
+              child: Text('Powered by: XXX', style: textStyle),
             ),
           ),
         ],

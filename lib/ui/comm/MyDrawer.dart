@@ -17,7 +17,10 @@ class MyDrawer extends StatelessWidget {
             otherAccountsPictures: <Widget>[
               GestureDetector(
                 child: Icon(Icons.settings, color: Colors.white),
-                onTap: () => Navigator.of(context).pushNamed('/setting'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/setting');
+                },
               )
             ],
             decoration: BoxDecoration(
