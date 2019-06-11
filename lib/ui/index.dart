@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/home/home_page.dart';
+import 'package:flutter_app/ui/idea/idea_page.dart';
+import 'package:flutter_app/ui/market/market_page.dart';
+import 'package:flutter_app/ui/my/my_page.dart';
+import 'package:flutter_app/ui/notice/notice_page.dart';
 import 'package:flutter_app/view/NavigationIconView.dart';
 import 'package:flutter_app/view/global_config.dart';
 
@@ -57,7 +62,7 @@ class _IndexState extends State<Index> with TickerProviderStateMixin {
       new MyPage()
     ];
 
-    _currentIndex = _pageList[_currentIndex];
+    _currentPage = _pageList[_currentIndex];
   }
 
   void _rebuild() {
