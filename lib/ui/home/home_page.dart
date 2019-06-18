@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/my/follow.dart';
+import 'package:flutter_app/ui/my/hot.dart';
 import 'package:flutter_app/ui/my/recommend.dart';
 import 'package:flutter_app/view/global_config.dart';
 

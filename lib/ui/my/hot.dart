@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bean/question.dart';
+import 'package:flutter_app/ui/my/question_page.dart';
 import 'package:flutter_app/view/global_config.dart';
 
 class Hot extends StatefulWidget {
